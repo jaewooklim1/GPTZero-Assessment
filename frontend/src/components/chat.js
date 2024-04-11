@@ -54,7 +54,9 @@ export const TextArea = ({ onChange, onSubmit, isLoading, hasError }) => {
   return (
     <div className="flex absolute bottom-0 w-full h-1/6 p-10  bg-slate-950 shadow">
       <textarea
-        className={`w-full rounded-xl bg-slate-900 border border-gray-500  p-2 text-white ${hasError ? "border-red-500" : ""}`}
+        className={`w-full rounded-xl bg-slate-900 border border-gray-500  p-2 text-white ${
+          hasError ? "border-red-500" : ""
+        }`}
         onChange={handleChange}
         value={text}
       ></textarea>
