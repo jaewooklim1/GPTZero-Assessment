@@ -21,7 +21,7 @@ export default function Home() {
   };
 
   const addMessage = (message, agent) => {
-    // debugger;
+    debugger;
     setMessages((prevMessages) => {
       const lastMessage = prevMessages[prevMessages.length - 1];
       if (lastMessage && lastMessage.agent === agent) {
@@ -53,18 +53,18 @@ export default function Home() {
     setError(null);
     setIsLoadingResponse(true);
     addMessage(prompt, agentTypes.user);
+
     if (ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(prompt);
     } else {
-      console.error("WebSocket connection not open yet.");
+      // Wait for the connection to open
+      ws.current.onopen = () => {
+        console.log("WebSocket connection established.");
+        ws.current.send(prompt);
+      };
     }
-    setPrompt("");
 
-    ws.current = new WebSocket("ws://localhost:8082/v1/stream");
-    ws.current.onopen = () => {
-      console.log("WebSocket connection established.");
-      ws.current.send(prompt);
-    };
+    setPrompt("");
   };
 
   useEffect(() => {
@@ -79,6 +79,10 @@ export default function Home() {
     };
     ws.current.onclose = () => console.log("WebSocket connection closed.");
     ws.current.onerror = (error) => console.error("WebSocket error:", error);
+
+    return () => {
+      ws.current.close();
+    };
   }, []);
 
   useEffect(() => {
