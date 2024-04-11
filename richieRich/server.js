@@ -21,8 +21,12 @@ app.post("/v1/chat/completions", async (req, res) => {
 });
 
 wsServer.on("connection", async (ws) => {
-  ws.on("message", async (prompt) => {
-    console.log("Received prompt: ", prompt);
+  let prompt = "";
+
+  ws.on("message", async (message) => {
+    console.log("Received message: ", message);
+
+    prompt += message;
     const modelOutputGenerator = getModelResponseGenerator(prompt);
     let result = await modelOutputGenerator.next();
     while (!result.done) {

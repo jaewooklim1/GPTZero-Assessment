@@ -21,11 +21,13 @@ const getModelResponse = async (prompt) => {
 const getModelResponseGenerator = async function* (prompt) {
   try {
     const choice = getMockData(prompt);
-    const words = choice.split(" ");
-    for (let word of words) {
-      await new Promise((resolve) => setTimeout(resolve, 20));
-      yield word + " ";
-    }
+    // const words = choice.split(" ");
+    // for (let word of words) {
+    //   await new Promise((resolve) => setTimeout(resolve, 20));
+    //   yield word + " ";
+    // }
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    yield choice;
   } catch (error) {
     console.error(error);
   }

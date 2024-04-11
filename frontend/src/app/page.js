@@ -14,6 +14,7 @@ export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState(null);
   const scrollContainerRef = useRef(null);
+  const ws = useRef(null);
 
   const handleTextAreaChange = (event) => {
     setPrompt(event.target.value);
@@ -35,18 +36,27 @@ export default function Home() {
       return;
     }
     setError(null);
-    try {
-      setIsLoadingResponse(true);
-      addMessage(prompt, agentTypes.user);
-      const response = await getPromptResponse(prompt);
-      addMessage(response, agentTypes.richieRich);
-      setPrompt("");
-      setIsLoadingResponse(false);
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-      setIsLoadingResponse(false);
+    setIsLoadingResponse(true);
+    addMessage(prompt, agentTypes.user);
+    if (ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(prompt);
+    } else {
+      console.error("WebSocket connection not open yet.");
     }
+    setPrompt("");
   };
+
+  useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8082/v1/stream");
+    ws.current.onopen = () => console.log("WebSocket connection established.");
+    ws.current.onmessage = (event) => {
+      const response = event.data;
+      addMessage(response, agentTypes.richieRich);
+      setIsLoadingResponse(false);
+    };
+    ws.current.onclose = () => console.log("WebSocket connection closed.");
+    ws.current.onerror = (error) => console.error("WebSocket error:", error);
+  }, []);
 
   useEffect(() => {
     scrollContainerRef.current.scrollTop =
@@ -64,7 +74,7 @@ export default function Home() {
             <ChatPrompt key={index} prompt={message.contents} />
           ) : (
             <ChatResponse key={index} response={message.contents} />
-          ),
+          )
         )}
       </div>
       <TextArea
