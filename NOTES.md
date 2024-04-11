@@ -10,7 +10,7 @@ In terms of scalability, this app works fine with 1 user. As more and more users
 
 In order to adhere to the rules that you've given, I just loaded the response all at once in order to display the response properly.
 
-After the 90 minutes, I was able to implement some changes to addMessage in order to check if the last message sent and the agent matches the current agent, then it concatenates the current message to the last message. Otherwise it adds a new message object to the 'prevMessages' array with the current message contents.
+After the 90 minutes, I was able to implement some changes to addMessage in order to check if the last message sent and the agent matches the current agent, then it concatenates the current message to the last message. Otherwise it adds a new message object to the 'prevMessages' array with the current message contents. That solution was able to give the one word at a time response that chatGPT gives within the same response box.
 
 After solving that problem, I ran into a new problem where a message and then a subsequent response wouldn't allow any more responses to show. There was some issues with websockets that closed connections and refused any new ones to be made. That problem was solved by adding some checks to handleSubmit in the frontend page.js.
 
