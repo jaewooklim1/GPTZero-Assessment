@@ -21,11 +21,9 @@ export default function Home() {
   };
 
   const addMessage = (message, agent) => {
-    debugger;
     setMessages((prevMessages) => {
       const lastMessage = prevMessages[prevMessages.length - 1];
       if (lastMessage && lastMessage.agent === agent) {
-        debugger;
         return [
           ...prevMessages.slice(0, -1),
           {
@@ -57,7 +55,6 @@ export default function Home() {
     if (ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(prompt);
     } else {
-      // Wait for the connection to open
       ws.current.onopen = () => {
         console.log("WebSocket connection established.");
         ws.current.send(prompt);
