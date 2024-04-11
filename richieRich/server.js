@@ -33,7 +33,6 @@ wsServer.on("connection", async (ws) => {
       ws.send(result.value);
       result = await modelOutputGenerator.next();
     }
-    // ws.close();
   });
 });
 

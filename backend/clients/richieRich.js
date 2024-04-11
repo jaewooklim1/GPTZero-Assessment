@@ -13,7 +13,6 @@ async function getRichieRichResponse(prompt) {
     ws.on("message", (data) => {
       console.log("Received response from server:", data);
       resolve(data);
-      // ws.close();
     });
 
     ws.on("error", (error) => {

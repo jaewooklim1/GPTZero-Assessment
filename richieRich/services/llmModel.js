@@ -2,7 +2,6 @@ const fs = require("fs");
 const yaml = require("js-yaml");
 
 const getModelResponse = async (prompt) => {
-  // Simulate a response from a model
   try {
     const choice = getMockData(prompt);
     const words = choice.split(" ");
